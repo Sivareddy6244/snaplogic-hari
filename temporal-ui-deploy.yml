@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: p2x-temporal-ui-deployment
+  labels:
+    app: p2x-temporal-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: p2x-temporal-ui
+  template:
+    metadata:
+      labels:
+        app: p2x-temporal-ui
+    spec:
+      containers:
+      - name: p2x-temporal-ui
+        image: asia-south1-docker.pkg.dev/bilvantisaimlproject/p2x/temporalio/ui@sha256:584fdf0cda1ea20f7032f6245406530e6812c12b6ded781e2e0b7fc041f96857
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: p2x-temporal-ui-service
+spec:
+  selector:
+    app: p2x-temporal-ui
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: LoadBalancer

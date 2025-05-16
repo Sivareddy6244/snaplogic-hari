@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: p2x-temporal-sql-worker-deployment
+  labels:
+    app: p2x-temporal-sql-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: p2x-temporal-sql-worker
+  template:
+    metadata:
+      labels:
+        app: p2x-temporal-sql-worker
+    spec:
+      containers:
+      - name: p2x-temporal-sql-worker
+        image: asia-south1-docker.pkg.dev/bilvantisaimlproject/p2x/temporal-migrateiq-workers-sql-worker@sha256:00a99da16f2ab3cf49ee797aa735e80f741807e2bb290ecac7e1a9e9a91dd42b
+        ports:
+        - containerPort: 7233
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: p2x-temporal-sql-worker-service
+spec:
+  selector:
+    app: p2x-temporal-sql-worker
+  ports:
+    - protocol: TCP
+      port: 7233
+      targetPort: 7233
+  type: LoadBalancer

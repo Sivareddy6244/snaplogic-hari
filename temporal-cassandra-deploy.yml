@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: p2x-temporal-cassandra-deployment
+  labels:
+    app: p2x-temporal-cassandra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: p2x-temporal-cassandra
+  template:
+    metadata:
+      labels:
+        app: p2x-temporal-cassandra
+    spec:
+      containers:
+      - name: p2x-temporal-cassandra
+        image: asia-south1-docker.pkg.dev/bilvantisaimlproject/p2x/cassandra@sha256:af85733a25666e2c6d3b7ca30f1f66eedb439d068cd422f1577166e0acaf4ca9
+        ports:
+        - containerPort: 9042
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: p2x-temporal-cassandra-service
+spec:
+  selector:
+    app: p2x-temporal-cassandra
+  ports:
+    - protocol: TCP
+      port: 9042
+      targetPort: 9042
+  type: LoadBalancer

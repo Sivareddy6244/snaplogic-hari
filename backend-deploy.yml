@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: p2x-backend-deployment
+  labels:
+    app: p2x-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: p2x-backend
+  template:
+    metadata:
+      labels:
+        app: p2x-backend
+    spec:
+      containers:
+      - name: p2x-backend
+        image: asia-south1-docker.pkg.dev/bilvantisaimlproject/p2x/transformatica-code-validation-api@sha256:9d984f62ef6deeb4fee0e98f63ef2d392445766915ad021dd5cf6b2584a966ac
+        ports:
+        - containerPort: 5050
+        - containerPort: 6060
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: p2x-backend-service
+spec:
+  selector:
+    app: p2x-backend
+  ports:
+    - name: http-5050
+      protocol: TCP
+      port: 5050
+      targetPort: 5050
+    - name: http-6060
+      protocol: TCP
+      port: 6060
+      targetPort: 6060
+  type: LoadBalancer

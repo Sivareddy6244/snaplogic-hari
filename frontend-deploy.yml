@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: p2x-front-deployment
+  labels:
+    app: p2x-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: p2x-frontend
+  template:
+    metadata:
+      labels:
+        app: p2x-frontend
+    spec:
+      containers:
+      - name: p2x-frontend
+        image: asia-south1-docker.pkg.dev/bilvantisaimlproject/p2x/p2x-nextapp@sha256:d863a2c59604ce0af79c166ee9890c74749a8db32e4218114000d30e2bbcdefb
+        ports:
+        - containerPort: 3000      
+        env:
+        - name: NEXT_PUBLIC_BASE_URL
+          value: "http://34.93.197.190:5050"
+        - name: NEXT_PUBLIC_ADMIN_URL
+          value: "http://34.93.197.190:6060" 
+        - name: NEXT_PUBLIC_TEMPORAL_URL1
+          value: "http://34.47.244.7:9000"   
+        - name: NEXT_PUBLIC_TEMPORAL_URL2
+          value: "http://34.47.231.169:8080"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: p2x-front-service
+spec:
+  selector:
+    app: p2x-frontend
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: LoadBalancer

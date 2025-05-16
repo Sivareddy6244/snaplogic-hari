@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: p2x-temporal-app-deployment
+  labels:
+    app: p2x-temporal-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: p2x-temporal-app
+  template:
+    metadata:
+      labels:
+        app: p2x-temporal-app
+    spec:
+      containers:
+      - name: p2x-temporal-app
+        image: asia-south1-docker.pkg.dev/bilvantisaimlproject/p2x/temporal-migrateiq-workers-temporal-app@sha256:cc70ef57cea5942a95b313717263f8b1ab014baf38eac5818c0a5725fe1c609a
+        ports:
+        - containerPort: 9000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: p2x-temporal-app-service
+spec:
+  selector:
+    app: p2x-temporal-app
+  ports:
+    - protocol: TCP
+      port: 9000
+      targetPort: 9000
+  type: LoadBalancer
