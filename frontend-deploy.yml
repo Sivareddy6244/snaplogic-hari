@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: p2x-front-deployment
+  namespace: p2x
   labels:
     app: p2x-frontend
 spec:
@@ -16,7 +17,8 @@ spec:
     spec:
       containers:
       - name: p2x-frontend
-        image: asia-south1-docker.pkg.dev/bilvantisaimlproject/p2x/p2x-nextapp@sha256:d863a2c59604ce0af79c166ee9890c74749a8db32e4218114000d30e2bbcdefb
+        image: p2x-nextapp-frontend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 3000      
         env:
@@ -33,6 +35,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: p2x-front-service
+  namespace: p2x
 spec:
   selector:
     app: p2x-frontend

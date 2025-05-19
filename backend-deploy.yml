@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: p2x-backend-deployment
+  namespace: p2x
   labels:
     app: p2x-backend
 spec:
@@ -16,16 +17,23 @@ spec:
     spec:
       containers:
       - name: p2x-backend
-        image: asia-south1-docker.pkg.dev/bilvantisaimlproject/p2x/transformatica-code-validation-api@sha256:9d984f62ef6deeb4fee0e98f63ef2d392445766915ad021dd5cf6b2584a966ac
+        image: p2x-backend:latest
+        imagePullPolicy: Always
         ports:
-        - containerPort: 5050
-        - containerPort: 6060
+          - containerPort: 5050
+          - containerPort: 6060
+        envFrom:
+          - configMapRef:
+              name: p2x-config
+          - secretRef:
+              name: genie-app-secrets
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: p2x-backend-service
+  namespace: p2x
 spec:
   selector:
     app: p2x-backend

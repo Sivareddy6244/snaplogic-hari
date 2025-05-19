@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: p2x-temporal-ui-deployment
+  name: p2x-temporal-auto-setup-deployment
   namespace: p2x
   labels:
-    app: p2x-temporal-ui
+    app: p2x-temporal-auto-setup
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: p2x-temporal-ui
+      app: p2x-temporal-auto-setup
   template:
     metadata:
       labels:
-        app: p2x-temporal-ui
+        app: p2x-temporal-auto-setup
     spec:
       containers:
-      - name: p2x-temporal-ui
-        image: temporalio/ui:2.20.0
+      - name: p2x-temporal-auto-setup
+        image: temporalio/auto-setup:1.22.4
         imagePullPolicy: Always
         ports:
-          - containerPort: 8080
+          - containerPort: 7233
         envFrom:
           - configMapRef:
               name: p2x-config
@@ -31,13 +31,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: p2x-temporal-ui-service
+  name: p2x-temporal-auto-setup-service
   namespace: p2x
 spec:
   selector:
-    app: p2x-temporal-ui
+    app: p2x-temporal-auto-setup
   ports:
     - protocol: TCP
-      port: 8080
-      targetPort: 8080
+      port: 7233
+      targetPort: 7233
   type: LoadBalancer

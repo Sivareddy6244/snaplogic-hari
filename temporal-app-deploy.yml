@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: p2x-temporal-app-deployment
+  namespace: p2x
   labels:
     app: p2x-temporal-app
 spec:
@@ -16,15 +17,22 @@ spec:
     spec:
       containers:
       - name: p2x-temporal-app
-        image: asia-south1-docker.pkg.dev/bilvantisaimlproject/p2x/temporal-migrateiq-workers-temporal-app@sha256:cc70ef57cea5942a95b313717263f8b1ab014baf38eac5818c0a5725fe1c609a
+        image: temporal-migrateiq-workers-temporal-app:latest
+        imagePullPolicy: Always
         ports:
-        - containerPort: 9000
+          - containerPort: 9000
+        envFrom:
+          - configMapRef:
+              name: p2x-config
+          - secretRef:
+              name: genie-app-secrets
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: p2x-temporal-app-service
+  namespace: p2x
 spec:
   selector:
     app: p2x-temporal-app

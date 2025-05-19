@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: p2x-config
+  namespace: p2x
+data:
+  DB_NAME: "p2x"
+  DB_USER: "postgres"
+  DB_HOST: "34.47.185.122"
+  DB_PORT: "5432"
+  SCHEMA: "infra"
+
+  OPENSOURCE_LLM_ENDPOINT: "http://localhost:11434"
+
+  JOB_DETAILS_TABLE: "job_details"
+
+  TRANS_DETAILS_TABLE: "transformation_level_details"
