@@ -25,7 +25,7 @@ spec:
           - configMapRef:
               name: p2x-config
           - secretRef:
-              name: genie-app-secrets
+              name: p2x-secrets
 
 ---
 apiVersion: v1
