@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: p2x-temporal-cassandra
-        image: cassandra:3.11.9
+        image: sivareddy6244/cassandra:3.11.9
         imagePullPolicy: Always
         ports:
           - containerPort: 9042

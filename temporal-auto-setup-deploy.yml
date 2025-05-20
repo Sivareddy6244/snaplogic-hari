@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: p2x-temporal-auto-setup
-        image: temporalio/auto-setup:1.22.4
+        image: sivareddy6244/temporal-auto-setup:1.22.4
         imagePullPolicy: Always
         ports:
           - containerPort: 7233

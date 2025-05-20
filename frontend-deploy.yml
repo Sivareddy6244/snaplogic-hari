@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: p2x-frontend
-        image: p2x-nextapp-frontend:latest
+        image: sivareddy6244/p2x-backend-images:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 3000      

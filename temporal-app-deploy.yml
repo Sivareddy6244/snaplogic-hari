@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: p2x-temporal-app
-        image: temporal-migrateiq-workers-temporal-app:latest
+        image: sivareddy6244/temporal-app:latest
         imagePullPolicy: Always
         ports:
           - containerPort: 9000
