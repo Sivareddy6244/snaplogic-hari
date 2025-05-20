@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: p2x-frontend
-        image: sivareddy6244/p2x-backend-images:latest
+        image: sivareddy6244/p2x-frontend:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 3000      
