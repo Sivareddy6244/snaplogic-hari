@@ -17,10 +17,15 @@ spec:
     spec:
       containers:
       - name: p2x-temporal-ui
-        image: sivareddy6244/temporal-ui:2.20.0
+        image: temporalio/ui:2.20.0
         imagePullPolicy: Always
         ports:
           - containerPort: 8080
+        env:
+        - name: TEMPORAL_ADDRESS
+          value: "temporal:7233"
+        - name: TEMPORAL_CORS_ORIGINS
+          value: "http://localhost:3000,http://35.200.135.8:3000,https://p2x-api.bilvantis.com, https://p2x.bilvantis.com, http://p2x.bilvantis.com"
         envFrom:
           - configMapRef:
               name: p2x-config

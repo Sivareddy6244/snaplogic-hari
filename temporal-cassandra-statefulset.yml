@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: p2x-temporal-cassandra
+  namespace: p2x
+  labels:
+    app: p2x-temporal-cassandra
+spec:
+  serviceName: p2x-temporal-cassandra-headless
+  replicas: 1
+  selector:
+    matchLabels:
+      app: p2x-temporal-cassandra
+  template:
+    metadata:
+      labels:
+        app: p2x-temporal-cassandra
+    spec:
+      containers:
+        - name: cassandra
+          image: cassandra:3.11.9
+          ports:
+            - containerPort: 9042
+          env:
+            - name: CASSANDRA_BROADCAST_ADDRESS
+              value: p2x-temporal-cassandra-0.p2x-temporal-cassandra-headless.p2x.svc.cluster.local
+            - name: CASSANDRA_SEEDS
+              value: p2x-temporal-cassandra-0.p2x-temporal-cassandra-headless.p2x.svc.cluster.local
+            - name: CASSANDRA_CLUSTER_NAME
+              value: "temporal"
+            - name: CASSANDRA_DC
+              value: "dc1"
+            - name: CASSANDRA_RACK
+              value: "rack1"
+            - name: HEAP_NEWSIZE
+              value: "256M"
+            - name: MAX_HEAP_SIZE
+              value: "1024M"
+          envFrom:
+            - configMapRef:
+                name: p2x-config
+            - secretRef:
+                name: p2x-secrets
+          volumeMounts:
+            - name: cassandra-data
+              mountPath: /var/lib/cassandra
+  volumeClaimTemplates:
+    - metadata:
+        name: cassandra-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 5Gi
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: p2x-temporal-cassandra-service
+  namespace: p2x
+spec:
+  selector:
+    app: p2x-temporal-cassandra
+  ports:
+    - protocol: TCP
+      port: 9042
+      targetPort: 9042
+  type: LoadBalancer

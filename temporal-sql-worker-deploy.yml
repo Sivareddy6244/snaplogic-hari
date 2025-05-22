@@ -21,11 +21,15 @@ spec:
         imagePullPolicy: Always
         ports:
           - containerPort: 7233
+        env:
+        - name: TEMPORAL_SERVER_URL
+          value: "temporal:7233"
         envFrom:
           - configMapRef:
               name: p2x-config
           - secretRef:
               name: p2x-secrets
+              
 
 ---
 apiVersion: v1

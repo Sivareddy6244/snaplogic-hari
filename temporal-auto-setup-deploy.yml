@@ -17,10 +17,13 @@ spec:
     spec:
       containers:
       - name: p2x-temporal-auto-setup
-        image: sivareddy6244/temporal-auto-setup:1.22.4
+        image: temporalio/auto-setup:1.22.4
         imagePullPolicy: Always
         ports:
           - containerPort: 7233
+        env:
+        - name: CASSANDRA_SEEDS
+          value: "cassandra"
         envFrom:
           - configMapRef:
               name: p2x-config

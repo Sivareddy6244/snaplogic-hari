@@ -23,13 +23,13 @@ spec:
         - containerPort: 3000      
         env:
         - name: NEXT_PUBLIC_BASE_URL
-          value: "http://34.93.197.190:5050"
+          value: "http://127.0.0.1/:5050"
         - name: NEXT_PUBLIC_ADMIN_URL
-          value: "http://34.93.197.190:6060" 
+          value: "http://127.0.0.1/:6060" 
         - name: NEXT_PUBLIC_TEMPORAL_URL1
-          value: "http://34.47.244.7:9000"   
+          value: "http://127.0.0.1/:9000"   
         - name: NEXT_PUBLIC_TEMPORAL_URL2
-          value: "http://34.47.231.169:8080"
+          value: "http://127.0.0.1/:8080"
 ---
 apiVersion: v1
 kind: Service
