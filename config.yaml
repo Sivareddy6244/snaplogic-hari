@@ -6,7 +6,7 @@ metadata:
 data:
   DB_NAME: "p2x"
   DB_USER: "postgres"
-  DB_HOST: "34.47.185.122"
+  DB_HOST: "35.200.135.8"
   DB_PORT: "5432"
   SCHEMA: "infra"
 
