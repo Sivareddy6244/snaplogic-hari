@@ -1,71 +1,76 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv
+  namespace: p2x
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/data/postgres
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: p2x
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  volumeName: postgres-pv
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: p2x-temporal-cassandra
+  name: p2x-postgres
   namespace: p2x
-  labels:
-    app: p2x-temporal-cassandra
 spec:
-  serviceName: p2x-temporal-cassandra-headless
+  serviceName: p2x-postgres-headless
   replicas: 1
   selector:
     matchLabels:
-      app: p2x-temporal-cassandra
+      app: p2x-postgres
   template:
     metadata:
       labels:
-        app: p2x-temporal-cassandra
+        app: p2x-postgres
     spec:
       containers:
-        - name: cassandra
-          image: cassandra:3.11.9
-          ports:
-            - containerPort: 9042
-          env:
-            - name: CASSANDRA_BROADCAST_ADDRESS
-              value: p2x-temporal-cassandra-0.p2x-temporal-cassandra-headless.p2x.svc.cluster.local
-            - name: CASSANDRA_SEEDS
-              value: p2x-temporal-cassandra-0.p2x-temporal-cassandra-headless.p2x.svc.cluster.local
-            - name: CASSANDRA_CLUSTER_NAME
-              value: "temporal"
-            - name: CASSANDRA_DC
-              value: "dc1"
-            - name: CASSANDRA_RACK
-              value: "rack1"
-            - name: HEAP_NEWSIZE
-              value: "256M"
-            - name: MAX_HEAP_SIZE
-              value: "1024M"
-          envFrom:
-            - configMapRef:
-                name: p2x-config
-            - secretRef:
-                name: p2x-secrets
-          volumeMounts:
-            - name: cassandra-data
-              mountPath: /var/lib/cassandra
-  volumeClaimTemplates:
-    - metadata:
-        name: cassandra-data
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        resources:
-          requests:
-            storage: 5Gi
-
-
+      - name: postgres
+        image: postgres:latest
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: "p2x"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: p2x-secrets
+              key: DB_PASS
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: postgres-pvc
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
-  name: p2x-temporal-cassandra-service
+  name: p2x-postgres-headless
   namespace: p2x
 spec:
+  clusterIP: None
   selector:
-    app: p2x-temporal-cassandra
+    app: p2x-postgres
   ports:
-    - protocol: TCP
-      port: 9042
-      targetPort: 9042
-  type: LoadBalancer
+    - port: 5432
+      targetPort: 5432
