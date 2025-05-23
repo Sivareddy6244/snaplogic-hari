@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: p2x-temporal-sql-worker
-        image: sivareddy6244/sql-worker:latest
+        image: bilvantip2x/temporal-migrateiq-workers-sql-worker:latest
         imagePullPolicy: Always
         ports:
           - containerPort: 7233
