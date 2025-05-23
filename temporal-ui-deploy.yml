@@ -25,7 +25,7 @@ spec:
         - name: TEMPORAL_ADDRESS
           value: "temporal:7233"
         - name: TEMPORAL_CORS_ORIGINS
-          value: "http://localhost:3000,http://35.200.135.8:3000,https://p2x-api.bilvantis.com, https://p2x.bilvantis.com, http://p2x.bilvantis.com"
+          value: "http://127.0.0.1:3000"
         envFrom:
           - configMapRef:
               name: p2x-config
