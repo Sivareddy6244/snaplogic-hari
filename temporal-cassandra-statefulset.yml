@@ -1,3 +1,40 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: standard
+provisioner: kubernetes.io/no-provisioner   
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: cassandra-pv
+  namespace: p2x
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  hostPath:
+    path: /mnt/data/cassandra
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cassandra-pvc
+  namespace: p2x
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: standard
+  volumeName: cassandra-pv
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -44,19 +81,11 @@ spec:
           volumeMounts:
             - name: cassandra-data
               mountPath: /var/lib/cassandra
-  volumeClaimTemplates:
-    - metadata:
-        name: cassandra-data
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        storageClassName: standard
-        resources:
-          requests:
-            storage: 5Gi
-
-
+      volumes:
+        - name: cassandra-data
+          persistentVolumeClaim:
+            claimName: cassandra-pvc
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
