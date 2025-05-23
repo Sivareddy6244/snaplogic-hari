@@ -17,19 +17,16 @@ spec:
     spec:
       containers:
       - name: p2x-frontend
-        image: sivareddy6244/p2x-frontend:latest
+        image: bilvantip2x/p2x-nextapp-frontend:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 3000      
-        env:
-        - name: NEXT_PUBLIC_BASE_URL
-          value: "http://127.0.0.1/:5050"
-        - name: NEXT_PUBLIC_ADMIN_URL
-          value: "http://127.0.0.1/:6060" 
-        - name: NEXT_PUBLIC_TEMPORAL_URL1
-          value: "http://127.0.0.1/:9000"   
-        - name: NEXT_PUBLIC_TEMPORAL_URL2
-          value: "http://127.0.0.1/:8080"
+        envFrom:
+        - configMapRef:
+            name: p2x-config
+        - secretRef:
+            name: p2x-secrets
+            
 ---
 apiVersion: v1
 kind: Service

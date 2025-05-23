@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: p2x-backend
-        image: sivareddy6244/p2x-backend-images:latest
+        image: bilvantip2x/transformatica-code-validation-api:latest
         imagePullPolicy: Always
         ports:
           - containerPort: 5050

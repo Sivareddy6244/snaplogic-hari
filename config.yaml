@@ -6,12 +6,15 @@ metadata:
 data:
   DB_NAME: "p2x"
   DB_USER: "postgres"
-  DB_HOST: "35.200.135.8"
+  DB_HOST: "127.0.0.1"
   DB_PORT: "5432"
   SCHEMA: "infra"
 
   OPENSOURCE_LLM_ENDPOINT: "http://localhost:11434"
-
   JOB_DETAILS_TABLE: "job_details"
-
   TRANS_DETAILS_TABLE: "transformation_level_details"
+
+  NEXT_PUBLIC_BASE_URL: "http://127.0.0.1:5050/"
+  NEXT_PUBLIC_ADMIN_URL: "http://127.0.0.1:6060/"
+  NEXT_PUBLIC_TEMPORAL_URL1: "http://127.0.0.1:9000/"
+  NEXT_PUBLIC_TEMPORAL_URL2: "http://127.0.0.1:8080/"
