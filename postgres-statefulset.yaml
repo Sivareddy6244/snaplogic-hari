@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: postgres_data
+  name: postgres-data
   namespace: p2x
 spec:
   capacity:
@@ -16,7 +16,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: postgres_ddl
+  name: postgres-ddl
   namespace: p2x
 spec:
   capacity:
@@ -31,7 +31,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres_data
+  name: postgres-data
   namespace: p2x
 spec:
   accessModes:
@@ -40,12 +40,12 @@ spec:
     requests:
       storage: 5Gi
   storageClassName: standard
-  volumeName: postgres_data
+  volumeName: postgres-data
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres_ddl
+  name: postgres-ddl
   namespace: p2x
 spec:
   accessModes:
@@ -54,7 +54,7 @@ spec:
     requests:
       storage: 5Gi
   storageClassName: standard
-  volumeName: postgres_ddl
+  volumeName: postgres-ddl
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -93,10 +93,10 @@ spec:
       volumes:
       - name: postgres-data
         persistentVolumeClaim:
-          claimName: postgres_data
+          claimName: postgres-data
       - name: postgres-ddl
         persistentVolumeClaim:
-          claimName: postgres_ddl
+          claimName: postgres-ddl
 ---
 apiVersion: v1
 kind: Service
