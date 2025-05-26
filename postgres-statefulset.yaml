@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -10,7 +11,7 @@ spec:
     - ReadWriteOnce
   storageClassName: standard
   hostPath:
-    path: /mnt/data/postgres_data    # Local path on node for DB data
+    path: /mnt/data/postgres_data
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
@@ -25,7 +26,7 @@ spec:
     - ReadWriteOnce
   storageClassName: standard
   hostPath:
-    path: /mnt/data/postgres_ddl     # Local path on node for ddl/backup files
+    path: /mnt/data/postgres_ddl
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
@@ -56,6 +57,19 @@ spec:
   storageClassName: standard
   volumeName: postgres-ddl
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: p2x-postgres-headless
+  namespace: p2x
+spec:
+  clusterIP: None
+  selector:
+    app: p2x-postgres
+  ports:
+    - port: 5432
+      targetPort: 5432
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -74,7 +88,7 @@ spec:
     spec:
       containers:
       - name: postgres
-        image: postgres:latest
+        image: postgres:17
         ports:
         - containerPort: 5432
         env:
@@ -97,19 +111,3 @@ spec:
       - name: postgres-ddl
         persistentVolumeClaim:
           claimName: postgres-ddl
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: p2x-postgres-headless
-  namespace: p2x
-spec:
-  clusterIP: None
-  selector:
-    app: p2x-postgres
-  ports:
-    - port: 5432
-      targetPort: 5432
-
-  

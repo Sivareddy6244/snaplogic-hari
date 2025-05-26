@@ -6,7 +6,7 @@ metadata:
 data:
   DB_NAME: "p2x"
   DB_USER: "postgres"
-  DB_HOST: "p2x-postgres-headless"
+  DB_HOST: "p2x-postgres-headless.p2x.svc.cluster.local"
   DB_PORT: "5432"
   SCHEMA: "infra"
 
