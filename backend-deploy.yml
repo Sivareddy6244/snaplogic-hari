@@ -22,6 +22,9 @@ spec:
         ports:
           - containerPort: 5050
           - containerPort: 6060
+        env:
+          - name: DB_HOST
+            value: "p2x-postgres-headless" 
         envFrom:
           - configMapRef:
               name: p2x-config

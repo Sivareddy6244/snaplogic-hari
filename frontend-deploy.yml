@@ -20,7 +20,10 @@ spec:
         image: bilvantip2x/p2x-nextapp-frontend:latest
         imagePullPolicy: Always
         ports:
-        - containerPort: 3000      
+        - containerPort: 3000
+        env:
+          - name: DB_HOST
+            value: "p2x-postgres-headless"      
         envFrom:
         - configMapRef:
             name: p2x-config
