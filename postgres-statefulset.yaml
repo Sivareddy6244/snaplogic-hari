@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: postgres-pv
+  name: postgres_data
   namespace: p2x
 spec:
   capacity:
@@ -10,13 +10,28 @@ spec:
     - ReadWriteOnce
   storageClassName: standard
   hostPath:
-    path: /mnt/data/postgres    # Local path on the node
+    path: /mnt/data/postgres_data    # Local path on node for DB data
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres_ddl
+  namespace: p2x
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  hostPath:
+    path: /mnt/data/postgres_ddl     # Local path on node for ddl/backup files
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pvc
+  name: postgres_data
   namespace: p2x
 spec:
   accessModes:
@@ -25,7 +40,21 @@ spec:
     requests:
       storage: 5Gi
   storageClassName: standard
-  volumeName: postgres-pv
+  volumeName: postgres_data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres_ddl
+  namespace: p2x
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: standard
+  volumeName: postgres_ddl
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -59,10 +88,15 @@ spec:
         volumeMounts:
         - name: postgres-data
           mountPath: /var/lib/postgresql/data
+        - name: postgres-ddl
+          mountPath: /mnt/backup
       volumes:
       - name: postgres-data
         persistentVolumeClaim:
-          claimName: postgres-pvc
+          claimName: postgres_data
+      - name: postgres-ddl
+        persistentVolumeClaim:
+          claimName: postgres_ddl
 ---
 apiVersion: v1
 kind: Service
