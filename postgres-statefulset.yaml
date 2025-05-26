@@ -64,6 +64,7 @@ metadata:
   namespace: p2x
 spec:
   clusterIP: None
+  publishNotReadyAddresses: true
   selector:
     app: p2x-postgres
   ports:

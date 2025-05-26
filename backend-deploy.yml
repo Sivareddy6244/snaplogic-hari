@@ -24,12 +24,79 @@ spec:
           - containerPort: 6060
         env:
           - name: DB_HOST
-            value: "p2x-postgres-headless" 
+            value: "p2x-postgres-headless.p2x.svc.cluster.local"
+          - name: DB_PORT
+            value: "5432"
+          - name: DB_NAME
+            value: "p2x"
         envFrom:
           - configMapRef:
               name: p2x-config
           - secretRef:
               name: p2x-secrets
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5050
+          initialDelaySeconds: 30
+          periodSeconds: 10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: p2x-backend-deployment
+#   namespace: p2x
+#   labels:
+#     app: p2x-backend
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: p2x-backend
+#   template:
+#     metadata:
+#       labels:
+#         app: p2x-backend
+#     spec:
+#       containers:
+#       - name: p2x-backend
+#         image: bilvantip2x/transformatica-code-validation-api:latest
+#         imagePullPolicy: Always
+#         ports:
+#           - containerPort: 5050
+#           - containerPort: 6060
+#         env:
+#           - name: DB_HOST
+#             value: "p2x-postgres-headless" 
+#         envFrom:
+#           - configMapRef:
+#               name: p2x-config
+#           - secretRef:
+#               name: p2x-secrets
 
 ---
 apiVersion: v1
