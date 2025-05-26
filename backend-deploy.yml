@@ -41,27 +41,25 @@ spec:
           initialDelaySeconds: 30
           periodSeconds: 10
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: p2x-backend-service
+  namespace: p2x
+spec:
+  selector:
+    app: p2x-backend
+  ports:
+    - name: http-5050
+      protocol: TCP
+      port: 5050
+      targetPort: 5050
+    - name: http-6060
+      protocol: TCP
+      port: 6060
+      targetPort: 6060
+  type: LoadBalancer
 
 
 
@@ -98,22 +96,4 @@ spec:
 #           - secretRef:
 #               name: p2x-secrets
 
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: p2x-backend-service
-  namespace: p2x
-spec:
-  selector:
-    app: p2x-backend
-  ports:
-    - name: http-5050
-      protocol: TCP
-      port: 5050
-      targetPort: 5050
-    - name: http-6060
-      protocol: TCP
-      port: 6060
-      targetPort: 6060
-  type: LoadBalancer
+
