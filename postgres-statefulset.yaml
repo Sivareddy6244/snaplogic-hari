@@ -104,9 +104,11 @@ metadata:
   name: p2x-postgres-headless
   namespace: p2x
 spec:
+  spec:
+    clusterIP: None 
   selector:
     app: p2x-postgres
   ports:
     - port: 5432
       targetPort: 5432
-  type: LoadBalancer
+  
