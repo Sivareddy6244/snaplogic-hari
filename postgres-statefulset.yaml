@@ -98,17 +98,18 @@ spec:
         persistentVolumeClaim:
           claimName: postgres-ddl
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
   name: p2x-postgres-headless
   namespace: p2x
 spec:
-  spec:
-    clusterIP: None 
+  clusterIP: None
   selector:
     app: p2x-postgres
   ports:
     - port: 5432
       targetPort: 5432
+
   
