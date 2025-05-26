@@ -36,7 +36,7 @@ spec:
               name: p2x-secrets
         readinessProbe:
           httpGet:
-            path: /health
+            path: /docs
             port: 5050
           initialDelaySeconds: 30
           periodSeconds: 10
