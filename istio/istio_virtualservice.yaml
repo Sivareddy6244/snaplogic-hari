@@ -33,7 +33,7 @@ spec:
   http:
     - match:
         - uri:
-            prefix: /docs
+            exact: /docs
       route:
         - destination:
             host: p2x-backend-service.p2x.svc.cluster.local
@@ -41,7 +41,7 @@ spec:
               number: 5050
     - match:
         - uri:
-            prefix: /docs/
+            exact: /docs/
       route:
         - destination:
             host: p2x-backend-service.p2x.svc.cluster.local
