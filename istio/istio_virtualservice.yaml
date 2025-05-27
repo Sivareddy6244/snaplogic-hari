@@ -1,0 +1,49 @@
+# Frontend
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: p2x-frontend-vs
+  namespace: p2x
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - p2x-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: p2x-front-service.p2x.svc.cluster.local
+            port:
+              number: 3000
+---
+# Backend
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: p2x-backend-vs
+  namespace: p2x
+spec:
+  hosts:
+    - "*"  
+  gateways:
+    - p2x-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /docs
+      route:
+        - destination:
+            host: p2x-backend-service.p2x.svc.cluster.local
+            port:
+              number: 5050
+    - match:
+        - uri:
+            prefix: /docs/
+      route:
+        - destination:
+            host: p2x-backend-service.p2x.svc.cluster.local
+            port:
+              number: 6060

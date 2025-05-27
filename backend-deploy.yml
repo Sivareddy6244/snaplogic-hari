@@ -59,7 +59,7 @@ spec:
       protocol: TCP
       port: 6060
       targetPort: 6060
-  type: LoadBalancer
+  type: ClusterIP
 
 
 
